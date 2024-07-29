@@ -14,6 +14,10 @@ import { CartPageComponent } from './components/pages/cart-page/cart-page.compon
 import { TitleComponent } from './components/partials/title/title.component';
 import { NotFoundComponent } from './components/partials/not-found/not-found.component';
 import { LoginPageComponent } from './components/pages/login-page/login-page.component';
+import {ToastModule} from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 
 @NgModule({
@@ -35,9 +39,11 @@ import { LoginPageComponent } from './components/pages/login-page/login-page.com
     RatingModule,
     FormsModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ToastModule,
+    BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
