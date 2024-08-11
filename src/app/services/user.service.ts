@@ -22,6 +22,10 @@ export class UserService {
     this.userObservable = this.userSubject.asObservable();
    }
 
+   public get currentUser():User{
+    return this.userSubject.value;
+   }
+
    login(userLogin:IUserLogin):Observable<User>{
     //we use pipe and tap to not change the type return of the post so subscribe and to continue to be an observable
     return this.http.post<User>(USER_LOGIN_URL, userLogin).pipe(tap({

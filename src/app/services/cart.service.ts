@@ -49,6 +49,10 @@ export class CartService {
     return this.cartSubject.asObservable();
   }
 
+  getCart(): Cart{
+    return this.cartSubject.value;//subject allways have the latest value
+  }
+
   //persistent data, to not delete when reload the page
   private setCartToLocalStorage():void{
     this.cart.totalPrice = this.cart.items.reduce((prevSum, currentItem) => prevSum+currentItem.price,0);
