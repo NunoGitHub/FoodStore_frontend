@@ -10,7 +10,9 @@
 
   <div class="map">
     <app-title title="Choose Your address on Map" fontSize="1.6rem"></app-title>
+    <map [order]="order"></map>
   </div>
+
   <div class="buttons-container">
     <div class="buttons">
       <button (click)="createOrder()">Go To Payment</button>

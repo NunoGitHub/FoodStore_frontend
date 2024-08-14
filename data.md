@@ -38,3 +38,6 @@ HTTP Interceptors are a middleware mechanism in Angular’s HttpClient module th
 5. Finalization:
 
     * Finally, the modified response is returned to the part of the application that made the request.
+
+
+### guards check some condition for showing some components
