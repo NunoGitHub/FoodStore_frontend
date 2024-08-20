@@ -41,3 +41,5 @@ HTTP Interceptors are a middleware mechanism in Angular’s HttpClient module th
 
 
 ### guards check some condition for showing some components
+
+preciso de ver o 15 e depois o 17.3

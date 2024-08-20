@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { User } from './../shared/models/User';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
 import { IUserLogin } from '../shared/interfaces/IUserLogin';
-import { USER_LOGIN_URL } from '../shared/constants/urls';
+import { USER_LOGIN_URL, USER_REGISTER_URL } from '../shared/constants/urls';
 import { MessageService } from 'primeng/api';
+import { IUserRegister } from '../shared/interfaces/IUserRegister';
 
 const USER_KEY ="User";
 
@@ -38,6 +39,26 @@ export class UserService {
         this.messageService.add({severity:'error', summary: errorResponse.error, detail: 'Login Failed'});
       }
     }));
+   }
+
+
+
+   register(userRegister:IUserRegister):Observable<User>{
+    return this.http.post<User>(USER_REGISTER_URL, userRegister).pipe(tap({
+      next: (user) =>{
+        this.setUserToLocalStorage(user);
+        this.userSubject.next(user);
+        this.messageService.add({severity:'success', summary: `welcome to foodmine ${user.name}`, detail: `Register Successful`});
+      },
+    }),
+    catchError((errorResponse) => {
+      this.messageService.add({severity:'error', summary: errorResponse.error, detail: 'Register Failed'});
+      // Log the error or handle it in a way that's appropriate for the service
+      console.error("Error occurred in the registration service:", errorResponse);
+      // Rethrow the error so it can be handled in the subscribe block
+      return throwError(() => errorResponse);
+    })
+    );
    }
 
    logout(){
