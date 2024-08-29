@@ -1,9 +1,11 @@
+import { OrderService } from './../../../services/order.service';
 import { CartService } from './../../../services/cart.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { UserService } from 'src/app/services/user.service';
 import { Order } from 'src/app/shared/models/Order';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-checkout-page',
@@ -16,7 +18,7 @@ export class CheckoutPageComponent implements OnInit {
 
   checkoutForm!:FormGroup;
 
-  constructor(cartService:CartService, private formBuilder:FormBuilder, private userService:UserService, private messageService: MessageService) {
+  constructor(cartService:CartService, private formBuilder:FormBuilder, private userService:UserService, private messageService: MessageService, private orderService:OrderService, private router:Router) {
 
     const cart = cartService.getCart();
     this.order.items= cart.items;
@@ -42,10 +44,24 @@ export class CheckoutPageComponent implements OnInit {
       return;
     }
 
+    //make the user select a location
+    if(!this.order.addressLatLng){
+      this.messageService.add({severity:'warning', summary: "Please select your location on the map", detail: 'Location'});
+      return;
+    }
+
     this.order.name = this.fc['name'].value;
     this.order.address = this.fc['address'].value;
 
-    console.log(this.order);
+    this.orderService.create(this.order).subscribe({
+      next: () =>{
+        this.router.navigateByUrl('/payment');
+      },
+        error:(errorResponse)=>{
+          this.messageService.add({severity:'error', summary: errorResponse.error, detail: 'Cart'});
+          console.log(errorResponse);
+        }
+    })
 
   }
 
